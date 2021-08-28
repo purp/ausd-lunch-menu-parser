@@ -14,7 +14,22 @@ menu_links.map {|elem| FinalRedirectUrl.final_redirect_url('https://www.schoolnu
     puts ">>> MENU URL: #{menu_url}"
     menu_pdf = URI.open(menu_url)
     menu_doc = PDF::Reader.new(menu_pdf)
-    puts menu_doc.info
-    puts menu_doc.pages.size
-    puts menu_doc.pages.first.text
+
+    # Menus are always 1 page and use returns and spaces for layout and have a few strange chars
+    # as well, so we clean things up
+    lines = menu_doc.pages.first.text.split(/(?:\n|\r)+/).reject(&:empty?)
+    lines.each do |line|
+        line.encode!(Encoding.find('ASCII'), :undef => :replace, :replace => '')
+        line.rstrip!
+    end
+
+    # Second line is usually the menu title (Elementary or Secondary)
+    school = lines[1].capitilize
+
+    # Third line has month and year
+    month, year = lines[2].match(/\bmenu\s+(?<month>\S+)\s+(?<year>\d+)).captures
+    month.capitalize!
+
+    # Fourth line is names of weekdays. I think we know those, and they don't change much.
+
 end
