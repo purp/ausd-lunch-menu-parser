@@ -7,3 +7,4 @@ end
 
 gem 'nokogiri'
 gem 'pdf-reader'
+gem 'final_redirect_url'
