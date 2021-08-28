@@ -1,5 +1,6 @@
 *.gem
 *.rbc
+irbrc_history
 /.config
 /coverage/
 /InstalledFiles
